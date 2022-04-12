@@ -1,4 +1,6 @@
-﻿namespace VetPetRejestration.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace VetPetRejestration.Models
 {
     public class Pet
     {

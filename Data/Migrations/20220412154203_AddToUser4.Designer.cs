@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VetPetRejestration.Data;
 
@@ -11,9 +12,10 @@ using VetPetRejestration.Data;
 namespace VetPetRejestration.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220412154203_AddToUser4")]
+    partial class AddToUser4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,7 +215,12 @@ namespace VetPetRejestration.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Pets");
                 });
@@ -353,7 +360,19 @@ namespace VetPetRejestration.Data.Migrations
 
             modelBuilder.Entity("VetPetRejestration.Models.Pet", b =>
                 {
+                    b.HasOne("VetPetRejestration.Models.User", null)
+                        .WithMany("Pets")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("VetPetRejestration.Models.Pet", b =>
+                {
                     b.Navigation("MedicalHistories");
+                });
+
+            modelBuilder.Entity("VetPetRejestration.Models.User", b =>
+                {
+                    b.Navigation("Pets");
                 });
 #pragma warning restore 612, 618
         }
