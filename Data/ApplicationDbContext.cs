@@ -9,6 +9,8 @@ namespace VetPetRejestration.Data
             : base(options)
         {
         }
+
+        public DbSet<Models.User> Users { get; set; }
         public DbSet<Models.Pet> Pets { get; set; }
         public DbSet<Models.MedicalHistory> MedicalHistories { get; set; }
     }
