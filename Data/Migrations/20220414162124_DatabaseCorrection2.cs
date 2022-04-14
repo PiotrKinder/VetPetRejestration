@@ -4,22 +4,23 @@
 
 namespace VetPetRejestration.Data.Migrations
 {
-    public partial class AddToUser2 : Migration
+    public partial class DatabaseCorrection2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Name",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: true);
+            migrationBuilder.AddColumn<bool>(
+                name: "Visible",
+                table: "Pets",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Name",
-                table: "AspNetUsers");
+                name: "Visible",
+                table: "Pets");
         }
     }
 }

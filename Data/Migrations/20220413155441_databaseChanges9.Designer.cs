@@ -12,8 +12,8 @@ using VetPetRejestration.Data;
 namespace VetPetRejestration.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220412175125_AddToUser6")]
-    partial class AddToUser6
+    [Migration("20220413155441_databaseChanges9")]
+    partial class databaseChanges9
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -205,7 +205,8 @@ namespace VetPetRejestration.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Sex")
                         .IsRequired()
@@ -213,7 +214,8 @@ namespace VetPetRejestration.Data.Migrations
 
                     b.Property<string>("Species")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");

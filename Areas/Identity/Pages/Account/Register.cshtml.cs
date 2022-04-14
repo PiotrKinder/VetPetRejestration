@@ -80,7 +80,7 @@ namespace VetPetRejestration.Areas.Identity.Pages.Account
 
             [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "Imie")]
+            [Display(Name = "Imię")]
             public string FistName { get; set; }
 
             [Required]
