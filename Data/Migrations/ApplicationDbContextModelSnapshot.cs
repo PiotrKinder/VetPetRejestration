@@ -17,7 +17,7 @@ namespace VetPetRejestration.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -178,6 +178,10 @@ namespace VetPetRejestration.Data.Migrations
                     b.Property<int?>("PetId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PetId");
@@ -226,6 +230,46 @@ namespace VetPetRejestration.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Pets");
+                });
+
+            modelBuilder.Entity("VetPetRejestration.Models.Registration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Date")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("PetId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Purpose")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Time")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("WasHappend")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PetId");
+
+                    b.ToTable("Registration");
                 });
 
             modelBuilder.Entity("VetPetRejestration.Models.User", b =>
@@ -368,9 +412,18 @@ namespace VetPetRejestration.Data.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("VetPetRejestration.Models.Registration", b =>
+                {
+                    b.HasOne("VetPetRejestration.Models.Pet", null)
+                        .WithMany("Registration")
+                        .HasForeignKey("PetId");
+                });
+
             modelBuilder.Entity("VetPetRejestration.Models.Pet", b =>
                 {
                     b.Navigation("MedicalHistories");
+
+                    b.Navigation("Registration");
                 });
 
             modelBuilder.Entity("VetPetRejestration.Models.User", b =>

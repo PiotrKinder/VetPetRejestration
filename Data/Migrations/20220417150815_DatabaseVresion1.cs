@@ -4,7 +4,7 @@
 
 namespace VetPetRejestration.Data.Migrations
 {
-    public partial class DatabaseCorrection : Migration
+    public partial class DatabaseVresion1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -35,7 +35,52 @@ namespace VetPetRejestration.Controllers
                 return View();
         }
 
-        public ActionResult Index() { return View(); }
+        public ActionResult AllVisits(int id) {
+            try
+            {
+                var userIdentity = User.Identity?.Name;
+                var visits = _dbContext.Pets
+                    .Include(r => r.Registration)
+                    .FirstOrDefault(i => i == _dbContext.Users
+                    .Include(p => p.Pets).FirstOrDefault(x => x.Email
+                    .Equals(userIdentity)).Pets.Where((x) => x.Visible.Equals(true))
+                    .FirstOrDefault(x => x.Id.Equals(id))).Registration;
+                return View(visits);
+            }
+            catch
+            {
+                return RedirectToAction(nameof(ShowAllPets));
+            }
+            
+        }
+
+        public ActionResult RegistrationAdd() { 
+            return View(new Registration()); 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegistrationAdd(Registration registration, int id)
+        {
+            try
+            {
+                var userIdentity = User.Identity?.Name;
+                var animal = _dbContext.Users.Include(p => p.Pets).FirstOrDefault(x => x.Email == userIdentity).Pets.FirstOrDefault(p => p.Id == id);
+                if(animal != null)
+                {
+                    registration.Id = 0;
+                    registration.Description = "";
+                    registration.IsActive = true;
+                    registration.WasHappend = false;
+                    animal.Registration.Add(registration);
+                    _dbContext.SaveChanges();
+                }
+                return RedirectToAction(nameof(ShowAllPets));
+            }catch
+            {
+                return View();
+            }
+        }
 
         // GET: PetsController/Details/5
         public ActionResult Details(int id)
@@ -68,6 +113,7 @@ namespace VetPetRejestration.Controllers
                 var userAnimals = _dbContext.Users.Include(p => p.Pets).FirstOrDefault(x => x.Email == userIdentity);
                 if( userAnimals != null)
                 {
+                    pet.Visible=true;
                     userAnimals.Pets.Add(pet);
                     _dbContext.SaveChanges();
                     Message = $"{DateTime.UtcNow.ToLongTimeString()} User {userIdentity} add new object to Pet";

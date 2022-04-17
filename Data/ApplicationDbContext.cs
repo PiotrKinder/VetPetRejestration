@@ -21,12 +21,11 @@ namespace VetPetRejestration.Data
 
             modelBuilder.Entity<User>()
                .Property(e => e.LastName)
-               .HasMaxLength(250);
-
-     
+               .HasMaxLength(250);     
         }
 
         public DbSet<Models.Pet> Pets { get; set; }
         public DbSet<Models.MedicalHistory> MedicalHistories { get; set; }
+        public DbSet<Models.Registration> Registration { get; set; }
     }
 }

@@ -23,9 +23,10 @@ namespace VetPetRejestration.Models
         [DisplayName("Płeć")]
         [Required(ErrorMessage = "Należy podać płeć")]
         public string Sex { get; set;}
-        [DisplayName("Opis")]
+        [DisplayName("Znaki szczególne")]
         public string Description { get; set; }
         public List<MedicalHistory> MedicalHistories { get; set; } = new List<MedicalHistory>();
+        public List<Registration> Registration { get; set; } = new List<Registration>();
         public bool Visible { get; set; }
     }
 }
