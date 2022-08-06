@@ -19,6 +19,7 @@ namespace VetPetRejestration.Models
         public string Purpose{ get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
+        [DisplayName("Czy się odbyła")]
         public bool WasHappend { get; set; }
 
     }

@@ -6,29 +6,36 @@ using VetPetRejestration.Models;
 using System.Collections;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using VetPetRejestration.Enums;
+using System.Text.Json;
 
 namespace VetPetRejestration.Controllers
 {
+
     [Authorize(Roles = "User")]
-    public class PetsController : Controller
+    public class UserController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly ILogger<PetsController> _logger;
+        private readonly ILogger<UserController> _logger;
         private static List<Pet> petsList = new List<Pet>();
         public string? Message { get; set; }
+        private string sexFileName = "_JSONS\\Sex.json";
+        private readonly List<string> files = new List<string> { "_JSONS\\Sex.json", "_JSONS\\Species.json" };
 
         //private readonly User _user;
-        public PetsController(ApplicationDbContext dbContext, ILogger<PetsController> logger)
+        public UserController(ApplicationDbContext dbContext, ILogger<UserController> logger)
         {
             _dbContext = dbContext;
             _logger = logger;
 
         }
         // GET: PetsController
-        public ActionResult ShowAllPets()
+        public ActionResult Index()
         {
             var userIdentity = User.Identity?.Name;
-            var userAnimals = _dbContext.Users.Include(p => p.Pets.Where(v => v.Visible==true)).FirstOrDefault(x => x.Email == userIdentity);
+            var userAnimals = _dbContext.Users.Include(p => p.Pets.Where(v => v.Visible==true)).SingleOrDefault(x => x.Email == userIdentity);
+           // var userAnimals2= from animals in _dbContext.Users where 
             if (userAnimals != null)
                 return View(userAnimals.Pets);
             else
@@ -49,7 +56,7 @@ namespace VetPetRejestration.Controllers
             }
             catch
             {
-                return RedirectToAction(nameof(ShowAllPets));
+                return RedirectToAction(nameof(Index));
             }
             
         }
@@ -75,7 +82,7 @@ namespace VetPetRejestration.Controllers
                     animal.Registration.Add(registration);
                     _dbContext.SaveChanges();
                 }
-                return RedirectToAction(nameof(ShowAllPets));
+                return RedirectToAction(nameof(Index));
             }catch
             {
                 return View();
@@ -99,6 +106,14 @@ namespace VetPetRejestration.Controllers
         // GET: PetsController/Create
         public ActionResult Create()
         {
+           // ViewBag.Sex = Enum.GetNames(typeof(Sex)).ToList();
+            ViewBag.Species = Enum.GetNames(typeof(Species)).ToList();
+            //var test = Enum.GetNames(typeof(Species)).ToList();
+            
+            SexEnum? sexEnum = JsonSerializer.Deserialize<SexEnum>(System.IO.File.ReadAllText(files[0]));           
+            SpeciesEnum? speciesEnum = JsonSerializer.Deserialize<SpeciesEnum>(System.IO.File.ReadAllText(files[1]));
+            ViewBag.Sex = sexEnum.Sex;
+            ViewBag.Species = speciesEnum.Species;
             return View(new Pet());
         }
 
@@ -118,7 +133,7 @@ namespace VetPetRejestration.Controllers
                     _dbContext.SaveChanges();
                     Message = $"{DateTime.UtcNow.ToLongTimeString()} User {userIdentity} add new object to Pet";
                     _logger.LogInformation(Message);
-                    return RedirectToAction(nameof(ShowAllPets));
+                    return RedirectToAction(nameof(Index));
                 }
                 return View();
             }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using VetPetRejestration.Enums;
 
 namespace VetPetRejestration.Models
 {
@@ -8,7 +9,6 @@ namespace VetPetRejestration.Models
         public int Id { get; set; }
         [DisplayName("Gatunek")]
         [Required(ErrorMessage = "Przed dodaniem pupila musisz podać jego gatunek")]
-        [StringLength(20, MinimumLength = 2, ErrorMessage = "Długość imienia musi składać się z minimum 2 liter a maksymalnie z 20")]
         public string Species { get; set; }
         [DisplayName("Imię")]
         [Required(ErrorMessage = "Podaj imię swojego pupila")]

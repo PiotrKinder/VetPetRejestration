@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<VetPetRejestration.Models.Registration>
 
 @{
-    ViewData["Title"] = "AllVisits";
+    ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Wszystkie wizyty</h1>
+<h1>Planowane wizyty</h1>
 
 
 <table class="table">
@@ -19,7 +19,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Purpose)
-            </th>
+            </th>          
             <th>
                 @Html.DisplayNameFor(model => model.WasHappend)
             </th>
@@ -43,6 +43,7 @@
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
